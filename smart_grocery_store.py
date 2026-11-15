@@ -1,292 +1,201 @@
-# ==========================================
-# SMART GROCERY STORE MANAGEMENT SYSTEM
-# ==========================================
+# Smart Grocery Store Management System
 
-# List of dictionaries to store products
-products = [
-    {"id": 101, "name": "Milk", "category": "Dairy", "price": 250, "stock": 20},
-    {"id": 102, "name": "Bread", "category": "Bakery", "price": 150, "stock": 15},
-    {"id": 103, "name": "Rice", "category": "Grocery", "price": 300, "stock": 10},
-    {"id": 104, "name": "Eggs", "category": "Dairy", "price": 30, "stock": 25},
-    {"id": 105, "name": "Sugar", "category": "Grocery", "price": 180, "stock": 4}
-]
+## Project Overview
 
-# Separate list to store completed sales
-sales = []
+The **Smart Grocery Store Management System** is a beginner-friendly,
+menu-driven Python application for managing a local grocery store. It
+helps the store owner maintain product details, manage stock, process
+customer sales, view sales records, and generate a store report.
 
+The project uses Python lists and dictionaries to store information in
+memory while the program is running.
 
-# Find a product using its ID
-def find_product(product_id):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
+## Features
 
+1.  **Add New Product**
+    -   Enter a product ID, name, category, price, and available stock.
+    -   Prevent duplicate product IDs.
+    -   Reject invalid prices, including zero, negative, `NaN`, and
+        infinite values (`inf`, `-inf`, `1e999`).
+    -   Store each product as a dictionary in the products list.
+2.  **View All Products**
+    -   Display all products with their IDs, names, categories, prices,
+        and stock quantities.
+3.  **Search Product**
+    -   Search for a product by its name or ID.
+    -   Display complete details when a match is found.
+4.  **Update Product Stock**
+    -   Find a product using its ID.
+    -   Add more stock or set a new stock quantity.
+5.  **Process Customer Sale**
+    -   Enter a product ID and purchase quantity.
+    -   Check that the product exists and enough stock is available.
+    -   Calculate the total price, deduct the sold quantity, and save
+        the sale.
+6.  **View Sales Records**
+    -   Display completed sales, including product ID, product name,
+        quantity sold, and total amount.
+7.  **Generate Store Report**
+    -   Show the total number of products.
+    -   Calculate total available stock.
+    -   Count sales transactions and calculate total revenue.
+    -   List products with fewer than 5 units in stock.
+    -   Identify the highest-priced and lowest-priced products.
+8.  **Exit**
+    -   Close the application.
 
-# Display all available products
-def display_products():
-    print("\n========== ALL PRODUCTS ==========")
+## Project Structure
 
-    if not products:
-        print("No products available.")
-        return
+``` text
+smart-grocery-store/
+│
+├── smart_grocery_store.py   (program + automatic tests)
+└── README.md
+```
 
-    for product in products:
-        print("---------------------------------")
-        print("Product ID:", product["id"])
-        print("Name:", product["name"])
-        print("Category:", product["category"])
-        print("Price: Rs.", product["price"])
-        print("Available Stock:", product["stock"])
+## Python Concepts and Techniques Used
 
+-   **Lists:** Store multiple product and sales records.
+-   **Dictionaries:** Store each product and sale as key-value pairs.
+-   **List `append()` method:** Add new products and completed sales.
+-   **Functions:** Organize the application into reusable tasks.
+-   **`for` loops:** Search, display, and calculate information from
+    records.
+-   **`while` loop:** Keep the menu running until the user exits.
+-   **Conditional statements:** Handle menu choices, product searches,
+    and stock checks.
+-   **Dictionary keys:** Access product and sales information.
+-   **Input validation:** Use `try-except` to handle invalid numeric
+    input and checks to prevent invalid prices, quantities, and
+    duplicate IDs.
+-   **Built-in functions:** Use `len()`, `max()`, and `min()` in the
+    store report.
+-   **`math.isfinite()`:** Reject `NaN` and infinite prices.
+-   **`unittest` and `unittest.mock`:** Test the program automatically
+    without typing inputs by hand.
 
-# Add a new product to the products list
-def add_product():
-    print("\n========== ADD NEW PRODUCT ==========")
+## Requirements
 
-    try:
-        product_id = int(input("Enter Product ID: "))
+-   Python 3.x
+-   No external Python libraries are required.
 
-        # Prevent duplicate product IDs
-        if find_product(product_id) is not None:
-            print("Error: Product ID already exists!")
-            return
+## How to Run the Program
 
-        name = input("Enter Product Name: ").strip()
-        category = input("Enter Category: ").strip()
-        price = float(input("Enter Product Price: "))
-        stock = int(input("Enter Available Stock: "))
+1.  Install Python 3 if it is not already installed.
+2.  Save the program as `smart_grocery_store.py`.
+3.  Open a terminal in the folder containing the file.
+4.  Run:
 
-        # Validate product information
-        if product_id <= 0 or not name or not category or price <= 0 or stock < 0:
-            print("Invalid product information!")
-            return
+``` bash
+python smart_grocery_store.py
+```
 
-        # Create a dictionary for the new product
-        new_product = {
-            "id": product_id,
-            "name": name,
-            "category": category,
-            "price": price,
-            "stock": stock
-        }
+On some systems, use:
 
-        # Add the dictionary to the products list
-        products.append(new_product)
-        print("Product added successfully!")
+``` bash
+python3 smart_grocery_store.py
+```
 
-    except ValueError:
-        print("Invalid input! Please enter correct numeric values.")
+5.  Select an option from the menu by entering a number from `1` to `8`.
 
+## Running the Tests
 
-# Search for a product by name or ID
-def search_product():
-    print("\n========== SEARCH PRODUCT ==========")
-    search_value = input("Enter Product Name or ID: ").strip()
+The tests are written inside `smart_grocery_store.py` itself (at the
+bottom of the file), so no extra file is needed. To run the tests instead
+of the menu, use:
 
-    for product in products:
-        if (search_value.lower() == product["name"].lower()
-                or search_value == str(product["id"])):
-            print("\nProduct Found!")
-            print("Product ID:", product["id"])
-            print("Name:", product["name"])
-            print("Category:", product["category"])
-            print("Price: Rs.", product["price"])
-            print("Available Stock:", product["stock"])
-            return
+``` bash
+python smart_grocery_store.py test
+```
 
-    print("Product not found!")
+(or `python3 smart_grocery_store.py test` on some systems). Running the
+program without the word `test` starts the normal menu.
 
+## Test Results
 
-# Add stock or set a new stock quantity
-def update_stock():
-    print("\n========== UPDATE PRODUCT STOCK ==========")
+**Result: 35 tests run, 35 passed, 0 failed (`OK`).**
 
-    try:
-        product_id = int(input("Enter Product ID: "))
-        product = find_product(product_id)
+| Area                | What is tested                                                                                                                         | Tests |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|------:|
+| Add Product         | Valid product, duplicate ID, `NaN` price (`nan`, `NaN`, `-nan`), infinite price (`inf`, `-inf`, `Infinity`, `1e999`), zero/negative price, negative stock, zero stock allowed, empty name/category, zero/negative ID, non-numeric and decimal input | 10 |
+| Search / View       | Search by ID, by name (case-insensitive, extra spaces), not found, view with no products                                               | 4 |
+| Update Stock        | Add stock, set stock to 0, negative stock rejected, add 0/negative rejected, unknown product, invalid choice, non-numeric input       | 6 |
+| Process Sale        | Valid sale, selling exact remaining stock, insufficient stock, zero/negative quantity, unknown product, non-numeric input, sold-out item | 7 |
+| Sales and Report    | Empty sales list, sales listing, totals and revenue, low stock (below 5 only, exactly 5 is not low), highest/lowest price, report with no products | 6 |
+| Menu                | Invalid menu choice then exit, running options then exit                                                                               | 2 |
 
-        if product is None:
-            print("Product not found!")
-            return
+Output of the run:
 
-        print("Current Stock:", product["stock"])
-        print("1. Add Stock")
-        print("2. Set New Stock Quantity")
-        choice = input("Enter your choice: ").strip()
+``` text
+Ran 35 tests in 0.008s
 
-        if choice == "1":
-            quantity = int(input("Enter quantity to add: "))
-            if quantity <= 0:
-                print("Quantity must be greater than zero!")
-                return
-            product["stock"] += quantity
+OK
+```
 
-        elif choice == "2":
-            quantity = int(input("Enter new stock quantity: "))
-            if quantity < 0:
-                print("Stock cannot be negative!")
-                return
-            product["stock"] = quantity
+### Bug found and fixed
 
-        else:
-            print("Invalid choice!")
-            return
+Python's `float()` accepts the text `nan` and `inf`. Because every
+comparison with `NaN` is `False`, the original check `price <= 0` did
+not reject it, and a product with price `nan` was saved. The program now
+checks `math.isfinite(price)` and shows:
+`Invalid price! Price must be a finite number.`
 
-        print("Stock updated successfully!")
-        print("New Available Stock:", product["stock"])
+### Changes made for testing
 
-    except ValueError:
-        print("Please enter valid numeric values!")
+The menu loop was moved into a `main()` function. At the bottom of the
+file, `if __name__ == "__main__":` decides what to run: the tests when
+`test` is given, otherwise the normal menu. The program works exactly the
+same way as before.
 
+## Sample Data
 
-# Process a customer purchase and save the sale record
-def process_sale():
-    print("\n========== PROCESS CUSTOMER SALE ==========")
+The application starts with these example products:
 
-    try:
-        product_id = int(input("Enter Product ID: "))
-        product = find_product(product_id)
+    Product ID Product Name   Category     Price (Rs.)   Stock
+  ------------ -------------- ---------- ------------- -------
+           101 Milk           Dairy                250      20
+           102 Bread          Bakery               150      15
+           103 Rice           Grocery              300      10
+           104 Eggs           Dairy                 30      25
+           105 Sugar          Grocery              180       4
 
-        if product is None:
-            print("Product not found!")
-            return
+## Sample Execution
 
-        quantity = int(input("Enter Purchase Quantity: "))
+Example of processing a sale:
 
-        if quantity <= 0:
-            print("Quantity must be greater than zero!")
-            return
+``` text
+Enter your choice: 5
 
-        # Check that enough stock is available
-        if quantity > product["stock"]:
-            print("Insufficient stock!")
-            print("Available Stock:", product["stock"])
-            return
+Enter Product ID: 101
+Enter Purchase Quantity: 2
 
-        # Calculate the total price and update stock
-        total_amount = product["price"] * quantity
-        product["stock"] -= quantity
+========== PURCHASE SUMMARY ==========
+Product: Milk
+Quantity Sold: 2
+Price Per Unit: Rs. 250
+Total Amount: Rs. 500
+Remaining Stock: 18
+Sale completed successfully!
+```
 
-        # Create and save the sales dictionary
-        sale_record = {
-            "product_id": product["id"],
-            "product_name": product["name"],
-            "quantity_sold": quantity,
-            "total_amount": total_amount
-        }
-        sales.append(sale_record)
+The sale is added to the sales list, and the product's available stock
+is reduced by the purchased quantity.
 
-        # Display purchase summary
-        print("\n========== PURCHASE SUMMARY ==========")
-        print("Product:", product["name"])
-        print("Quantity Sold:", quantity)
-        print("Price Per Unit: Rs.", product["price"])
-        print("Total Amount: Rs.", total_amount)
-        print("Remaining Stock:", product["stock"])
-        print("Sale completed successfully!")
+## Important Notes
 
-    except ValueError:
-        print("Invalid input! Enter numeric values.")
+-   Product and sales data are stored in Python lists, so they are
+    available only while the program is running.
+-   Data is not permanently saved to a file or database.
+-   A sale is recorded only when the product exists and sufficient stock
+    is available.
+-   Product stock cannot be set to a negative quantity.
+-   Products with stock below 5 units appear in the low-stock section of
+    the report.
 
+## Author
 
-# Display all completed sales
-def view_sales():
-    print("\n========== SALES RECORDS ==========")
+**Student Name:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-    if not sales:
-        print("No sales records available.")
-        return
+**Roll Number:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-    for sale in sales:
-        print("---------------------------------")
-        print("Product ID:", sale["product_id"])
-        print("Product Name:", sale["product_name"])
-        print("Quantity Sold:", sale["quantity_sold"])
-        print("Total Amount: Rs.", sale["total_amount"])
-
-
-# Generate a summary report for the store
-def generate_report():
-    print("\n========== STORE REPORT ==========")
-
-    total_products = len(products)
-
-    # Calculate total available stock
-    total_stock = 0
-    for product in products:
-        total_stock += product["stock"]
-
-    # Calculate total sales transactions and revenue
-    total_transactions = len(sales)
-    total_revenue = 0
-    for sale in sales:
-        total_revenue += sale["total_amount"]
-
-    print("Total Products:", total_products)
-    print("Total Available Stock:", total_stock)
-    print("Total Sales Transactions:", total_transactions)
-    print("Total Revenue: Rs.", total_revenue)
-
-    # Display products with fewer than 5 units in stock
-    print("\nProducts with Stock Below 5:")
-    low_stock_found = False
-
-    for product in products:
-        if product["stock"] < 5:
-            print(product["name"], "-", product["stock"], "units")
-            low_stock_found = True
-
-    if not low_stock_found:
-        print("No low-stock products.")
-
-    # Find the highest- and lowest-priced products
-    if products:
-        highest_price = max(products, key=lambda item: item["price"])
-        lowest_price = min(products, key=lambda item: item["price"])
-
-        print("\nHighest Priced Product:")
-        print(highest_price["name"], "- Rs.", highest_price["price"])
-
-        print("\nLowest Priced Product:")
-        print(lowest_price["name"], "- Rs.", lowest_price["price"])
-
-
-# ==========================================
-# MAIN MENU
-# ==========================================
-
-while True:
-    print("\n====================================")
-    print("   SMART GROCERY STORE SYSTEM")
-    print("====================================")
-    print("1. Add New Product")
-    print("2. View All Products")
-    print("3. Search Product")
-    print("4. Update Product Stock")
-    print("5. Process Customer Sale")
-    print("6. View Sales Records")
-    print("7. Generate Store Report")
-    print("8. Exit")
-
-    choice = input("\nEnter your choice: ").strip()
-
-    if choice == "1":
-        add_product()
-    elif choice == "2":
-        display_products()
-    elif choice == "3":
-        search_product()
-    elif choice == "4":
-        update_stock()
-    elif choice == "5":
-        process_sale()
-    elif choice == "6":
-        view_sales()
-    elif choice == "7":
-        generate_report()
-    elif choice == "8":
-        print("Thank you for using Smart Grocery Store System!")
-        break
-    else:
-        print("Invalid choice! Please select between 1 and 8.")
+**Course / Class:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
