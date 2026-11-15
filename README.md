@@ -15,6 +15,8 @@ memory while the program is running.
 1.  **Add New Product**
     -   Enter a product ID, name, category, price, and available stock.
     -   Prevent duplicate product IDs.
+    -   Reject invalid prices, including zero, negative, `NaN`, and
+        infinite values (`inf`, `-inf`, `1e999`).
     -   Store each product as a dictionary in the products list.
 2.  **View All Products**
     -   Display all products with their IDs, names, categories, prices,
@@ -47,7 +49,7 @@ memory while the program is running.
 ``` text
 smart-grocery-store/
 │
-├── smart_grocery_store.py
+├── smart_grocery_store.py   (program + automatic tests)
 └── README.md
 ```
 
@@ -68,6 +70,9 @@ smart-grocery-store/
     duplicate IDs.
 -   **Built-in functions:** Use `len()`, `max()`, and `min()` in the
     store report.
+-   **`math.isfinite()`:** Reject `NaN` and infinite prices.
+-   **`unittest` and `unittest.mock`:** Test the program automatically
+    without typing inputs by hand.
 
 ## Requirements
 
@@ -92,6 +97,55 @@ python3 smart_grocery_store.py
 ```
 
 5.  Select an option from the menu by entering a number from `1` to `8`.
+
+## Running the Tests
+
+The tests are written inside `smart_grocery_store.py` itself (at the
+bottom of the file), so no extra file is needed. To run the tests instead
+of the menu, use:
+
+``` bash
+python smart_grocery_store.py test
+```
+
+(or `python3 smart_grocery_store.py test` on some systems). Running the
+program without the word `test` starts the normal menu.
+
+## Test Results
+
+**Result: 35 tests run, 35 passed, 0 failed (`OK`).**
+
+| Area                | What is tested                                                                                                                         | Tests |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|------:|
+| Add Product         | Valid product, duplicate ID, `NaN` price (`nan`, `NaN`, `-nan`), infinite price (`inf`, `-inf`, `Infinity`, `1e999`), zero/negative price, negative stock, zero stock allowed, empty name/category, zero/negative ID, non-numeric and decimal input | 10 |
+| Search / View       | Search by ID, by name (case-insensitive, extra spaces), not found, view with no products                                               | 4 |
+| Update Stock        | Add stock, set stock to 0, negative stock rejected, add 0/negative rejected, unknown product, invalid choice, non-numeric input       | 6 |
+| Process Sale        | Valid sale, selling exact remaining stock, insufficient stock, zero/negative quantity, unknown product, non-numeric input, sold-out item | 7 |
+| Sales and Report    | Empty sales list, sales listing, totals and revenue, low stock (below 5 only, exactly 5 is not low), highest/lowest price, report with no products | 6 |
+| Menu                | Invalid menu choice then exit, running options then exit                                                                               | 2 |
+
+Output of the run:
+
+``` text
+Ran 35 tests in 0.008s
+
+OK
+```
+
+### Bug found and fixed
+
+Python's `float()` accepts the text `nan` and `inf`. Because every
+comparison with `NaN` is `False`, the original check `price <= 0` did
+not reject it, and a product with price `nan` was saved. The program now
+checks `math.isfinite(price)` and shows:
+`Invalid price! Price must be a finite number.`
+
+### Changes made for testing
+
+The menu loop was moved into a `main()` function. At the bottom of the
+file, `if __name__ == "__main__":` decides what to run: the tests when
+`test` is given, otherwise the normal menu. The program works exactly the
+same way as before.
 
 ## Sample Data
 
